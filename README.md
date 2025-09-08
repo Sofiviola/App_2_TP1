@@ -1,4 +1,4 @@
-# 🌾 AgroViola — Datos de ejemplo (Agro)
+# 🌾 AgroViola 
 
 ## 🧱 Archivos y propósito
 
@@ -11,11 +11,3 @@
 - `ventas.id_usuario` **→** `usuarios.id`
 - `ventas.productos[].id_producto` **→** `productos.id`
 - `productos.id_proveedor` **→** `proveedores.id` *(si usás el archivo opcional)*
-
----
-
-## 🔤 Tipos de datos presentes (según consigna)
-
-- **Numéricos**: `id`, `precio`, `subtotal`, `total`, `cantidad`, `stock`, `cp`.
-- **Cadenas**: `nombre`, `apellido`, `email`, `desc`, `imagen`, `categoria`, `unidad`, `direccion.*`, `razon_social`, `cuit`, `rubro`, `telefono`.
-- **Booleanos**: `activo`, `es_admin`, `es_nacional`, `pagado`, `facturado`, `enviado`.
