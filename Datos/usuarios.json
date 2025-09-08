@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "nombre": "Lucía",
+    "apellido": "Pérez",
+    "email": "lucia.perez@agroviola.test",
+    "contraseña": "$2b$12$hashFake001",
+    "activo": true,
+    "es_admin": false,
+    "fecha_registro": "2025-08-21T14:22:10Z"
+  },
+  {
+    "id": 2,
+    "nombre": "Juan",
+    "apellido": "Gómez",
+    "email": "juan.gomez@agroviola.test",
+    "contraseña": "$2b$12$hashFake002",
+    "activo": true,
+    "es_admin": true,
+    "fecha_registro": "2025-08-23T09:05:33Z"
+  },
+  {
+    "id": 3,
+    "nombre": "Sofía",
+    "apellido": "Martínez",
+    "email": "sofia.martinez@agroviola.test",
+    "contraseña": "$2b$12$hashFake003",
+    "activo": true,
+    "es_admin": false,
+    "fecha_registro": "2025-08-30T17:41:02Z"
+  },
+  {
+    "id": 4,
+    "nombre": "Franco",
+    "apellido": "Viola",
+    "email": "franco.viola@agroviola.test",
+    "contraseña": "$2b$12$hashFake004",
+    "activo": true,
+    "es_admin": false,
+    "fecha_registro": "2025-09-01T12:11:47Z"
+  },
+  {
+    "id": 5,
+    "nombre": "Carlos",
+    "apellido": "Benítez",
+    "email": "carlos.benitez@agroviola.test",
+    "contraseña": "$2b$12$hashFake005",
+    "activo": false,
+    "es_admin": false,
+    "fecha_registro": "2025-09-02T08:10:00Z"
+  },
+  {
+    "id": 6,
+    "nombre": "Marta",
+    "apellido": "Ruiz",
+    "email": "marta.ruiz@agroviola.test",
+    "contraseña": "$2b$12$hashFake006",
+    "activo": true,
+    "es_admin": false,
+    "fecha_registro": "2025-09-03T10:00:00Z"
+  }
+]

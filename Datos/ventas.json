@@ -1,0 +1,115 @@
+[
+  {
+    "id": 1,
+    "id_usuario": 1,
+    "fecha": "2025-09-02T14:20:00Z",
+    "total": 128000.0,
+    "direccion": { "calle": "Av. San Martín 1200", "localidad": "Córdoba", "provincia": "Córdoba", "cp": "5000" },
+    "pagado": true,
+    "facturado": true,
+    "enviado": false,
+    "productos": [
+      { "id_producto": 201, "cantidad": 2, "precio_unitario": 45000.0, "subtotal": 90000.0 },
+      { "id_producto": 203, "cantidad": 1, "precio_unitario": 38000.0, "subtotal": 38000.0 }
+    ]
+  },
+  {
+    "id": 2,
+    "id_usuario": 2,
+    "fecha": "2025-09-02T18:45:00Z",
+    "total": 155000.0,
+    "direccion": { "calle": "Bv. Illia 250", "localidad": "Villa Carlos Paz", "provincia": "Córdoba", "cp": "5152" },
+    "pagado": true,
+    "facturado": false,
+    "enviado": true,
+    "productos": [
+      { "id_producto": 204, "cantidad": 1, "precio_unitario": 98000.0, "subtotal": 98000.0 },
+      { "id_producto": 212, "cantidad": 3, "precio_unitario": 19000.0, "subtotal": 57000.0 }
+    ]
+  },
+  {
+    "id": 3,
+    "id_usuario": 3,
+    "fecha": "2025-09-03T09:30:00Z",
+    "total": 169000.0,
+    "direccion": { "calle": "Belgrano 55", "localidad": "Río Cuarto", "provincia": "Córdoba", "cp": "5800" },
+    "pagado": false,
+    "facturado": false,
+    "enviado": false,
+    "productos": [
+      { "id_producto": 209, "cantidad": 1, "precio_unitario": 110000.0, "subtotal": 110000.0 },
+      { "id_producto": 208, "cantidad": 1, "precio_unitario": 59000.0, "subtotal": 59000.0 }
+    ]
+  },
+  {
+    "id": 4,
+    "id_usuario": 4,
+    "fecha": "2025-09-03T15:10:00Z",
+    "total": 147000.0,
+    "direccion": { "calle": "Sarmiento 890", "localidad": "Santa Fe", "provincia": "Santa Fe", "cp": "3000" },
+    "pagado": true,
+    "facturado": true,
+    "enviado": true,
+    "productos": [
+      { "id_producto": 202, "cantidad": 1, "precio_unitario": 72000.0, "subtotal": 72000.0 },
+      { "id_producto": 206, "cantidad": 1, "precio_unitario": 75000.0, "subtotal": 75000.0 }
+    ]
+  },
+  {
+    "id": 5,
+    "id_usuario": 5,
+    "fecha": "2025-09-04T11:00:00Z",
+    "total": 161000.0,
+    "direccion": { "calle": "Mitre 101", "localidad": "Rosario", "provincia": "Santa Fe", "cp": "2000" },
+    "pagado": true,
+    "facturado": true,
+    "enviado": false,
+    "productos": [
+      { "id_producto": 210, "cantidad": 1, "precio_unitario": 85000.0, "subtotal": 85000.0 },
+      { "id_producto": 203, "cantidad": 2, "precio_unitario": 38000.0, "subtotal": 76000.0 }
+    ]
+  },
+  {
+    "id": 6,
+    "id_usuario": 6,
+    "fecha": "2025-09-04T17:55:00Z",
+    "total": 172000.0,
+    "direccion": { "calle": "Maipú 321", "localidad": "Mendoza", "provincia": "Mendoza", "cp": "5500" },
+    "pagado": true,
+    "facturado": false,
+    "enviado": true,
+    "productos": [
+      { "id_producto": 207, "cantidad": 1, "precio_unitario": 130000.0, "subtotal": 130000.0 },
+      { "id_producto": 211, "cantidad": 2, "precio_unitario": 21000.0, "subtotal": 42000.0 }
+    ]
+  },
+  {
+    "id": 7,
+    "id_usuario": 1,
+    "fecha": "2025-09-05T10:25:00Z",
+    "total": 102000.0,
+    "direccion": { "calle": "San Lorenzo 77", "localidad": "Córdoba", "provincia": "Córdoba", "cp": "5000" },
+    "pagado": false,
+    "facturado": false,
+    "enviado": false,
+    "productos": [
+      { "id_producto": 205, "cantidad": 4, "precio_unitario": 16000.0, "subtotal": 64000.0 },
+      { "id_producto": 212, "cantidad": 2, "precio_unitario": 19000.0, "subtotal": 38000.0 }
+    ]
+  },
+  {
+    "id": 8,
+    "id_usuario": 2,
+    "fecha": "2025-09-06T19:40:00Z",
+    "total": 248000.0,
+    "direccion": { "calle": "Colón 600", "localidad": "Neuquén", "provincia": "Neuquén", "cp": "8300" },
+    "pagado": true,
+    "facturado": true,
+    "enviado": true,
+    "productos": [
+      { "id_producto": 201, "cantidad": 1, "precio_unitario": 45000.0, "subtotal": 45000.0 },
+      { "id_producto": 202, "cantidad": 2, "precio_unitario": 72000.0, "subtotal": 144000.0 },
+      { "id_producto": 208, "cantidad": 1, "precio_unitario": 59000.0, "subtotal": 59000.0 }
+    ]
+  }
+]

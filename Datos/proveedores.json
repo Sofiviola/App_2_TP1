@@ -1,0 +1,112 @@
+[
+  {
+    "id": 401,
+    "razon_social": "Semilleras Pampeanas S.A.",
+    "cuit": "30-71234567-8",
+    "email": "ventas@semilleraspampeanas.com",
+    "rubro": "semillas",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 11 4123-1001",
+    "direccion": { "calle": "Ruta 5 km 320", "ciudad": "Santa Rosa", "provincia": "La Pampa" }
+  },
+  {
+    "id": 402,
+    "razon_social": "AgroSemillas SRL",
+    "cuit": "30-76543210-9",
+    "email": "contacto@agrosemillas.com",
+    "rubro": "semillas",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 351 456-7788",
+    "direccion": { "calle": "Av. Sabattini 4500", "ciudad": "Córdoba", "provincia": "Córdoba" }
+  },
+  {
+    "id": 403,
+    "razon_social": "FertiAndes S.A.",
+    "cuit": "30-70112233-4",
+    "email": "comercial@fertiandes.com",
+    "rubro": "fertilizantes",
+    "es_nacional": false,
+    "activo": true,
+    "telefono": "+56 2 2345-7788",
+    "direccion": { "calle": "Los Olivos 220", "ciudad": "Santiago", "provincia": "RM" }
+  },
+  {
+    "id": 404,
+    "razon_social": "QuimAgro SRL",
+    "cuit": "30-70998877-6",
+    "email": "soporte@quimagro.com",
+    "rubro": "agroquimicos",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 11 4555-2244",
+    "direccion": { "calle": "Parque Industrial 12", "ciudad": "Zárate", "provincia": "Buenos Aires" }
+  },
+  {
+    "id": 405,
+    "razon_social": "CampoPack S.A.",
+    "cuit": "30-70887766-5",
+    "email": "ventas@campopack.com",
+    "rubro": "embalajes",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 11 4300-7788",
+    "direccion": { "calle": "Colectora Oeste 1500", "ciudad": "Pergamino", "provincia": "Buenos Aires" }
+  },
+  {
+    "id": 406,
+    "razon_social": "MetalRural S.A.",
+    "cuit": "30-70334455-2",
+    "email": "info@metalrural.com",
+    "rubro": "alambrados",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 11 4788-9900",
+    "direccion": { "calle": "Las Heras 890", "ciudad": "Rosario", "provincia": "Santa Fe" }
+  },
+  {
+    "id": 407,
+    "razon_social": "TecnoCampo S.A.",
+    "cuit": "30-70001122-3",
+    "email": "ventas@tecnocampo.com",
+    "rubro": "electronica agro",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 11 4777-1122",
+    "direccion": { "calle": "Int. Güiraldes 123", "ciudad": "Morón", "provincia": "Buenos Aires" }
+  },
+  {
+    "id": 408,
+    "razon_social": "RiegoPro SRL",
+    "cuit": "30-70665544-1",
+    "email": "ventas@riegopro.com",
+    "rubro": "riego",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 261 422-3300",
+    "direccion": { "calle": "San Martín 301", "ciudad": "Mendoza", "provincia": "Mendoza" }
+  },
+  {
+    "id": 409,
+    "razon_social": "AgroRepuestos SRL",
+    "cuit": "30-70990123-5",
+    "email": "contacto@agrorepuestos.com",
+    "rubro": "repuestos",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 351 455-2211",
+    "direccion": { "calle": "Bv. Los Granaderos 900", "ciudad": "Córdoba", "provincia": "Córdoba" }
+  },
+  {
+    "id": 410,
+    "razon_social": "Rural Cuerdas SRL",
+    "cuit": "30-70444555-0",
+    "email": "ventas@ruralcuerdas.com",
+    "rubro": "insumos",
+    "es_nacional": true,
+    "activo": true,
+    "telefono": "+54 11 4333-7788",
+    "direccion": { "calle": "Parque Norte 500", "ciudad": "San Nicolás", "provincia": "Buenos Aires" }
+  }
+]
