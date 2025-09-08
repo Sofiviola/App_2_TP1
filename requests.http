@@ -1,0 +1,43 @@
+### 1) GET - productos filtrados (semillas activas)
+GET http://localhost:3000/api/productos?categoria=semillas&activo=true
+
+### 2) GET - venta por id
+GET http://localhost:3000/api/ventas/1
+
+### 3) POST - crear usuario NUEVO
+POST http://localhost:3000/api/usuarios
+Content-Type: application/json
+
+{
+  "nombre": "Ana",
+  "apellido": "Suarez",
+  "email": "ana@demo.test",
+  "contraseña": "hash-demo",
+  "activo": true,
+  "es_admin": false
+}
+
+### 4) POST - crear venta (ajustá ids si hace falta)
+POST http://localhost:3000/api/ventas
+Content-Type: application/json
+
+{
+  "id_usuario": 1,
+  "direccion": { "calle": "Av. Campo 123", "localidad": "Pergamino", "provincia": "Buenos Aires", "cp": "2700" },
+  "productos": [
+    { "id_producto": 201, "cantidad": 1 },
+    { "id_producto": 203, "cantidad": 2 }
+  ]
+}
+
+### 5) PUT - actualizar producto (205)
+PUT http://localhost:3000/api/productos/205
+Content-Type: application/json
+
+{ "stock": 160, "precio": 16500 }
+
+### 6) DELETE - usuario con ventas (debe fallar con 409)
+DELETE http://localhost:3000/api/usuarios/1
+
+### 7) DELETE - usuario recién creado (reemplazá <ID> por el id que te devolvió el POST de usuario)
+DELETE http://localhost:3000/api/usuarios/<ID>
