@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AgroViola • Tienda</title>
+  <style>
+  :root{
+    --bg:#f6f7fb;
+    --surface:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --line:#e5e7eb;
+    --accent:#16a34a;       /* verde principal */
+    --accent-600:#15803d;
+    --accent-50:#e9f9ef;
+    --shadow:0 10px 25px rgba(2,6,23,.08);
+    --radius:16px;
+    --gap:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    color:var(--text); background:
+      radial-gradient(1200px 600px at -10% -20%, #d9f99d33, transparent 60%),
+      radial-gradient(1200px 600px at 120% -10%, #bbf7d033, transparent 60%),
+      var(--bg);
+    padding:24px;
+  }
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow)}
+  .row{display:flex; gap:var(--gap); align-items:center; flex-wrap:wrap}
+  .right{margin-left:auto}
+  .muted{color:var(--muted); font-size:12px}
+
+  /* Topbar */
+  .topbar{padding:18px; position:sticky; top:16px; z-index:10;
+    backdrop-filter:saturate(140%) blur(4px)}
+  .topbar h1{margin:0; letter-spacing:.2px}
+  .topbar::before{
+    content:""; position:absolute; inset:-1px; border-radius:calc(var(--radius) + 1px);
+    background:linear-gradient(120deg,#22c55e33,#84cc1633,#22c55e00);
+    z-index:-1;
+  }
+
+  /* Inputs | selects */
+  select, input[type="text"], input[type="number"]{
+    padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:#fff; outline:none;
+    transition:border .15s, box-shadow .15s;
+  }
+  select:focus, input:focus{ border-color:#a3e635; box-shadow:0 0 0 4px #bef26455 }
+
+  /* Buttons */
+  button{ padding:9px 12px; border-radius:12px; border:1px solid var(--line); background:#f8fafc; cursor:pointer;
+          transition:transform .06s ease, box-shadow .15s, background .15s, border-color .15s }
+  button:hover{ transform:translateY(-1px); box-shadow:0 6px 18px rgba(2,6,23,.06)}
+  button:active{ transform:translateY(0) }
+  button.primary{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  button.primary:hover{ background:var(--accent-600); border-color:var(--accent-600) }
+  button:disabled{ opacity:.5; cursor:not-allowed; transform:none; box-shadow:none }
+
+  /* Grid de productos */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:18px; margin-top:16px }
+  .prod{ display:grid; gap:10px; padding:14px; border-radius:14px; transition:transform .12s ease, box-shadow .2s }
+  .prod:hover{ transform:translateY(-3px); box-shadow:0 16px 35px rgba(2,6,23,.10) }
+  .imgph{
+    width:100%; aspect-ratio: 16/10; border-radius:12px; overflow:hidden; position:relative;
+    background:repeating-linear-gradient(135deg,#eef2ff,#eef2ff 14px,#e2e8f0 14px,#e2e8f0 28px);
+  }
+  .imgph img{ width:100%; height:100%; object-fit:cover; display:block }
+  .imgph::after{
+    content:""; position:absolute; inset:0; background:linear-gradient(to bottom, transparent, #0000000f);
+  }
+  .price{ font-weight:700; font-size:18px }
+  .chip{ background:var(--accent-50); color:var(--accent-600); padding:2px 8px; border-radius:999px; font-size:12px }
+  .stock{ background:#eef2ff; color:#334155; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid #e5e7eb }
+
+  /* Carrito */
+  table{ border-collapse:collapse; width:100% }
+  th,td{ border:1px solid #eef2ff; padding:10px; font-size:14px }
+  tfoot td{ background:#f8fafc }
+  .total{ font-weight:800 }
+  #badgeCart, #badgeTotal{ background:#0ea5e922; color:#0369a1; border:1px solid #bae6fd; }
+  /* animación “bump” del contador */
+  .bump{ animation:bump .3s ease }
+  @keyframes bump{
+    0%{ transform:scale(1) } 50%{ transform:scale(1.06) } 100%{ transform:scale(1) }
+  }
+
+  /* Contenedor general en pantallas muy anchas */
+  @media (min-width:1280px){ body{ padding-left:48px; padding-right:48px; } }
+</style>
+
+</head>
+<body>
+  <header class="card topbar">
+    <div class="row">
+      <h1 style="margin:0">AgroViola</h1>
+      <span class="muted"><code></code></span>
+    </div>
+
+    <div class="row">
+      <label>Usuario: 
+        <select id="selUser"></select>
+      </label>
+      <label>Dirección:
+        <input id="inpAddress" type="text" placeholder="Av. Siempre Viva 742" />
+      </label>
+      <span class="right">
+        <button id="btnComprar" class="primary">Comprar</button>
+      </span>
+    </div>
+
+    <div class="row">
+      <label>Categoría:
+        <select id="selCat"><option value="">Todas</option></select>
+      </label>
+      <label>Buscar:
+        <input id="inpSearch" type="text" placeholder="Nombre o descripción..." />
+      </label>
+      <span class="pill" id="badgeCart">Carrito: 0 items</span>
+      <span class="pill" id="badgeTotal">$ 0</span>
+    </div>
+  </header>
+
+  <main class="grid" id="gridProducts"></main>
+
+  <section class="card" style="margin-top:16px">
+    <h2 style="margin-top:0">Carrito</h2>
+    <div id="cartEmpty" class="muted">Tu carrito está vacío.</div>
+    <div id="cartBox" style="display:none">
+      <table>
+        <thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Subtotal</th><th></th></tr></thead>
+        <tbody id="cartBody"></tbody>
+        <tfoot>
+          <tr><td colspan="3" class="right total">Total</td><td class="total" id="cartTotal">$ 0</td><td></td></tr>
+        </tfoot>
+      </table>
+      <div class="row" style="margin-top:10px">
+        <button id="btnVaciar">Vaciar carrito</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="./app.js"></script>
+</body>
+</html>

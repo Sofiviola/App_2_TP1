@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+const PUBLIC_DIR = path.join(__dirname, 'public');
+app.use(express.static(PUBLIC_DIR));
+
+
 // ---------- util fs ----------
 const DATA_DIR = path.join(__dirname, '..', 'Datos');
 
@@ -31,14 +35,9 @@ function nextId(arr) {
   return arr.length ? Math.max(...arr.map(x => x.id || 0)) + 1 : 1;
 }
 
-// ---------- health ----------
-app.get('/', (req, res) => {
-  res.json({
-    ok: true,
-    name: 'AgroViola API',
-    version: '1.0.0',
-    docs: '/api/rutas'
-  });
+
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
 });
 
 // =====================================================
