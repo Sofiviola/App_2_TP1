@@ -64,9 +64,19 @@
     "nombre": "Ana",
     "apellido": "Suarez",
     "email": "ana@demo.test",
-    "contraseña": "hash-demo",
+    "contraseña": "$2b$10$hkS6xFtrZ1MM4VZ8qx6Wm.zO6zoso3JVHMLnQcnrr5ptLKE3a8q9.",
     "activo": true,
     "es_admin": false,
     "fecha_registro": "2025-09-08T16:32:15.231Z"
+  },
+  {
+    "id": 8,
+    "nombre": "Sofia",
+    "apellido": "viola",
+    "email": "sofiaviola524@gmail.com",
+    "contraseña": "$2b$10$8Nv3FPzK1yENAsSrLRx9LOM/4fEO3oOa01XPzI7vk.xKMK8VK5aYS",
+    "activo": true,
+    "es_admin": false,
+    "fecha_registro": "2025-11-11T01:15:10.884Z"
   }
 ]

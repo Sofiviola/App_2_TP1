@@ -89,6 +89,47 @@
 
   /* Contenedor general en pantallas muy anchas */
   @media (min-width:1280px){ body{ padding-left:48px; padding-right:48px; } }
+
+  /* Panel de autenticación */
+  .authpanel input { padding: 10px 12px; border:1px solid var(--line); border-radius:10px; }
+
+/* === Botón AGREGAR (en las cards) – alto contraste === */
+.prod button{
+  background: var(--accent);     
+  color: #fff;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.prod button:hover{
+  background: var(--accent-600);
+  border-color: var(--accent-600);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(22,163,74,.25);
+}
+.prod button:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px #86efac80; 
+}
+.prod button:active{
+  transform: translateY(0);
+}
+.prod button:disabled{
+  background: #e2e8f0;            
+  color: #94a3b8;
+  border-color: #cbd5e1;
+  box-shadow: none;
+  transform: none;
+}
+
+#cartBody button{
+  background: transparent;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+#cartBody button:hover{
+  background: #fee2e2;
+}
+
 </style>
 
 </head>
@@ -106,6 +147,13 @@
       <label>Dirección:
         <input id="inpAddress" type="text" placeholder="Av. Siempre Viva 742" />
       </label>
+      <div class="row" id="authRow">
+  <span class="pill" id="authStatus">Sesión: Invitado</span>
+  <button id="btnShowLogin">Ingresar</button>
+  <button id="btnShowSignup">Crear cuenta</button>
+  <button id="btnLogout" style="display:none">Salir</button>
+</div>
+
       <span class="right">
         <button id="btnComprar" class="primary">Comprar</button>
       </span>
@@ -122,6 +170,25 @@
       <span class="pill" id="badgeTotal">$ 0</span>
     </div>
   </header>
+<div id="loginForm" class="card authpanel" style="display:none;margin-top:12px;max-width:560px">
+  <h3 style="margin:0 0 8px">Ingresar</h3>
+  <div class="row">
+    <input id="loginEmail" type="email" placeholder="Email" style="flex:1" />
+    <input id="loginPass" type="password" placeholder="Contraseña" style="flex:1" />
+    <button id="btnLogin" class="primary">Entrar</button>
+  </div>
+</div>
+
+<div id="signupForm" class="card authpanel" style="display:none;margin-top:12px;max-width:720px">
+  <h3 style="margin:0 0 8px">Crear cuenta</h3>
+  <div class="row">
+    <input id="suNombre" type="text" placeholder="Nombre" />
+    <input id="suApellido" type="text" placeholder="Apellido" />
+    <input id="suEmail" type="email" placeholder="Email" style="flex:1" />
+    <input id="suPass" type="password" placeholder="Contraseña" />
+    <button id="btnSignup" class="primary">Registrarme</button>
+  </div>
+</div>
 
   <main class="grid" id="gridProducts"></main>
 

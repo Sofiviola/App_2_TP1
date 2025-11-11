@@ -7,6 +7,32 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const bcrypt = require('bcryptjs');   
+const jwt = require('jsonwebtoken');  
+require('dotenv').config();      
+
+// JWT helpers
+const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_change_me';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '2h';
+const signToken = (user) =>
+  jwt.sign(
+    { sub: user.id, email: user.email, name: `${user.nombre} ${user.apellido}` },
+    JWT_SECRET,
+    { expiresIn: JWT_EXPIRES_IN }
+  );
+
+const requireAuth = (req, res, next) => {
+  const auth = req.headers.authorization || '';
+  const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
+  if (!token) return res.status(401).json({ error: 'Token requerido' });
+  try {
+    req.user = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch {
+    res.status(401).json({ error: 'Token inválido o expirado' });
+  }
+};
+
 app.use(cors());
 app.use(express.json());
 
@@ -83,11 +109,40 @@ app.get('/api/ventas/:id', async (req, res) => {
 app.get('/api/usuarios', async (_req, res) => {
   try {
     const usuarios = await readJSON(filePath.usuarios);
-    res.json(usuarios);
+    const seguros = usuarios.map(u => {
+      const { ["contraseña"]: _omit, ...safe } = u;
+      return safe;
+    });
+    res.json(seguros);
   } catch (e) {
     res.status(500).json({ error: 'Error al leer usuarios', detail: e.message });
   }
 });
+
+
+// Login: devuelve token JWT si email/contraseña válidos
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, contraseña, password } = req.body || {};
+    const pass = contraseña || password;
+    if (!email || !pass) return res.status(400).json({ error: 'email y contraseña son obligatorios' });
+
+    const usuarios = await readJSON(filePath.usuarios);
+    const u = usuarios.find(x => String(x.email).toLowerCase() === String(email).toLowerCase());
+    if (!u) return res.status(401).json({ error: 'Credenciales inválidas' });
+    if (!u.activo) return res.status(403).json({ error: 'Usuario inactivo' });
+
+    const ok = await bcrypt.compare(pass, u["contraseña"]);
+    if (!ok) return res.status(401).json({ error: 'Credenciales inválidas' });
+
+    const token = signToken(u);
+    const { ["contraseña"]: _omit, ...userSafe } = u;
+    res.json({ token, user: userSafe, expiresIn: JWT_EXPIRES_IN });
+  } catch (e) {
+    res.status(500).json({ error: 'Error en login', detail: e.message });
+  }
+});
+
 
 app.get('/api/proveedores', async (_req, res) => {
   try {
@@ -109,29 +164,47 @@ app.post('/api/usuarios', async (req, res) => {
     if (!nombre || !apellido || !email || !contraseña) {
       return res.status(400).json({ error: 'nombre, apellido, email y contraseña son obligatorios' });
     }
+
     const usuarios = await readJSON(filePath.usuarios);
     if (usuarios.some(u => u.email.toLowerCase() === String(email).toLowerCase())) {
       return res.status(409).json({ error: 'Email ya registrado' });
     }
+
+    const hashed = await bcrypt.hash(contraseña, 10);  // <- AQUÍ
+
     const nuevo = {
       id: nextId(usuarios),
-      nombre, apellido, email, contraseña,
+      nombre, apellido, email,
+      ["contraseña"]: hashed,                          // <- GUARDAR HASH
       activo: Boolean(activo),
       es_admin: Boolean(es_admin),
       fecha_registro: new Date().toISOString()
     };
+
     usuarios.push(nuevo);
     await writeJSON(filePath.usuarios, usuarios);
-    res.status(201).json(nuevo);
+
+    // opcional: no devolver el hash
+    const { ["contraseña"]: _omit, ...safe } = nuevo;
+    res.status(201).json(safe);
   } catch (e) {
     res.status(500).json({ error: 'Error al crear usuario', detail: e.message });
   }
 });
 
+
 // POST 2: crear venta (valida usuario, productos, stock; calcula totales; descuenta stock)
-app.post('/api/ventas', async (req, res) => {
+// Reemplazá la firma del endpoint por requireAuth:
+app.post('/api/ventas', requireAuth, async (req, res) => {
   try {
-    const { id_usuario, direccion, productos = [] } = req.body || {};
+    let { id_usuario, direccion, productos = [] } = req.body || {};
+
+    // Si viene token, priorizamos el user del token
+    if (req.user?.sub) id_usuario = Number(req.user.sub);
+
+    if (!id_usuario || !direccion || !Array.isArray(productos) || productos.length === 0) {
+      return res.status(400).json({ error: 'id_usuario/direccion/productos[] obligatorios' });
+    }
 
     if (!id_usuario || !direccion || !Array.isArray(productos) || productos.length === 0) {
       return res.status(400).json({ error: 'id_usuario, direccion y productos[] son obligatorios' });

@@ -3,6 +3,14 @@ const API = ''; // mismo origin -> '' (las rutas empiezan con /api)
 const LS_CART = 'agro_cart';
 const LS_UID  = 'agro_uid';
 const LS_ADDR = 'agro_addr';
+const LS_TOKEN = 'agro_token';
+const LS_USER  = 'agro_user';   // user serializado
+let auth = {
+  token: localStorage.getItem(LS_TOKEN) || null,
+  user: null
+};
+try { auth.user = JSON.parse(localStorage.getItem(LS_USER) || 'null'); } catch {}
+
 
 // === State ===
 let allProducts = [];
@@ -53,9 +61,22 @@ async function init(){
   $('#inpAddress').addEventListener('input', e => localStorage.setItem(LS_ADDR, e.target.value));
   $('#btnVaciar').addEventListener('click', () => { cart = {}; saveCart(); renderCart(); });
   $('#btnComprar').addEventListener('click', comprar);
+$('#btnShowLogin').addEventListener('click', () => {
+  $('#loginForm').style.display = $('#loginForm').style.display ? '' : 'none';
+  $('#signupForm').style.display = 'none';
+});
+$('#btnShowSignup').addEventListener('click', () => {
+  $('#signupForm').style.display = $('#signupForm').style.display ? '' : 'none';
+  $('#loginForm').style.display = 'none';
+});
+$('#btnLogout').addEventListener('click', () => setAuth({ token:null, user:null }));
+
+$('#btnLogin').addEventListener('click', loginSubmit);
+$('#btnSignup').addEventListener('click', signupSubmit);
 
   renderProducts();
   renderCart();
+  renderAuthUI();
 }
 
 // === Render productos ===
@@ -156,10 +177,10 @@ window.removeItem = (pid) => { delete cart[pid]; saveCart(); renderCart(); rende
 
 // === Comprar ===
 async function comprar(){
-  const id_usuario = Number($('#selUser').value);
   const direccion = $('#inpAddress').value.trim();
-  if (!id_usuario) return alert('Seleccioná un usuario');
-  if (!direccion) return alert('Ingresá una dirección');
+  if (!auth?.token) return alert('Primero iniciá sesión o creá tu cuenta');
+  if (!direccion)   return alert('Ingresá una dirección');
+
   const items = Object.entries(cart)
     .filter(([_,qty]) => qty>0)
     .map(([pid, qty]) => ({ id_producto: Number(pid), cantidad: Number(qty) }));
@@ -167,39 +188,117 @@ async function comprar(){
 
   try {
     $('#btnComprar').disabled = true;
-    const venta = await postJson('/api/ventas', { id_usuario, direccion, productos: items });
+    // NO mandamos id_usuario: el backend lo saca del token
+    const venta = await postJson('/api/ventas', { direccion, productos: items });
     alert(`Compra creada!\nVenta #${venta.id}\nTotal: ${fmtMoney(venta.total)}`);
     cart = {}; saveCart();
-    // Re-fetch productos para refrescar stock
-    allProducts = await fetchJson('/api/productos');
-    renderProducts();
-    renderCart();
+    allProducts = await fetchJson('/api/productos'); // refresca stock
+    renderProducts(); renderCart();
   } catch (e) {
-    console.error(e);
     alert('No se pudo completar la compra: ' + (e.message || e));
   } finally {
     $('#btnComprar').disabled = false;
   }
 }
 
+
 // === Fetch helpers ===
 async function fetchJson(url){
-  const res = await fetch(API + url);
+  const res = await fetch(API + url, { headers: { ...getAuthHeaders() } });
   if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
 async function postJson(url, body){
   const res = await fetch(API + url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
     body: JSON.stringify(body)
   });
   if (!res.ok) throw new Error(await res.text());
   return res.json();
 }
 
+
 function escapeHtml(s){
   return String(s)
     .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
     .replaceAll('"','&quot;').replaceAll("'",'&#039;');
+}
+
+function setAuth(newAuth){
+  auth = newAuth;
+  if (!auth?.token) {
+    localStorage.removeItem(LS_TOKEN);
+    localStorage.removeItem(LS_USER);
+  } else {
+    localStorage.setItem(LS_TOKEN, auth.token);
+    localStorage.setItem(LS_USER, JSON.stringify(auth.user || null));
+  }
+  renderAuthUI();
+}
+
+function renderAuthUI(){
+  const authStatus = $('#authStatus');
+  const btnLogout  = $('#btnLogout');
+  const btnLoginUI = $('#btnShowLogin');
+  const btnSignupUI= $('#btnShowSignup');
+  const selUserBox = $('#selUser')?.closest('label');
+
+  if (auth?.token && auth?.user){
+    authStatus.textContent = `Sesión: ${auth.user.nombre} ${auth.user.apellido}`;
+    btnLogout.style.display  = '';
+    btnLoginUI.style.display = 'none';
+    btnSignupUI.style.display= 'none';
+    if (selUserBox) selUserBox.style.display = 'none';   // ocultar combo de “Usuario”
+  } else {
+    authStatus.textContent = 'Sesión: Invitado';
+    btnLogout.style.display  = 'none';
+    btnLoginUI.style.display = '';
+    btnSignupUI.style.display= '';
+    if (selUserBox) selUserBox.style.display = '';       // mostrar combo si no hay login
+  }
+  // cerrar paneles
+  $('#loginForm').style.display  = 'none';
+  $('#signupForm').style.display = 'none';
+}
+
+function getAuthHeaders(){
+  return auth?.token ? { Authorization: `Bearer ${auth.token}` } : {};
+}
+
+
+async function loginSubmit(){
+  const email = $('#loginEmail').value.trim();
+  const pass  = $('#loginPass').value;
+  if (!email || !pass) return alert('Completá email y contraseña');
+
+  try{
+    const data = await postJson('/api/auth/login', { email, 'contraseña': pass });
+    // data => { token, user, expiresIn }
+    setAuth({ token: data.token, user: data.user });
+    alert('Sesión iniciada');
+  }catch(e){
+    alert('Login fallido: ' + (e.message || e));
+  }
+}
+
+async function signupSubmit(){
+  const nombre   = $('#suNombre').value.trim();
+  const apellido = $('#suApellido').value.trim();
+  const email    = $('#suEmail').value.trim();
+  const pass     = $('#suPass').value;
+  if (!nombre || !apellido || !email || !pass) return alert('Completá todos los campos');
+
+  try{
+    // crea usuario (el back hashea con bcrypt)
+    await postJson('/api/usuarios', { nombre, apellido, email, 'contraseña': pass, activo:true });
+    // login automático
+    const data = await postJson('/api/auth/login', { email, 'contraseña': pass });
+    setAuth({ token: data.token, user: data.user });
+    alert('Cuenta creada e ingresaste ✅');
+    // refrescar combo de usuarios por si lo usás modo invitado
+    users = await fetchJson('/api/usuarios');
+  }catch(e){
+    alert('Registro fallido: ' + (e.message || e));
+  }
 }
